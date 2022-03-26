@@ -57,6 +57,7 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <a href="{{ route('home') }}" class="dropdown-item">Dashboard</a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -75,17 +76,19 @@
         </nav>
 
         <main class="py-4">
-            @if(Session::has('success'))
-                <div class="alert alert-success mt-5" role="alert">
-                    {{Session::get('success')}}
-                </div>
-            @endif
-            @if(Session::has('error'))
-                <div class="alert alert-success mt-5" role="alert">
-                    {{Session::get('error')}}
-                </div>
-            @endif
-            @yield('content')
+            <div class="container">
+                @if(Session::has('success'))
+                    <div class="alert alert-success mt-2 mb-2" role="alert">
+                        {{Session::get('success')}}
+                    </div>
+                @endif
+                @if(Session::has('error'))
+                    <div class="alert alert-success mt-2 mb-2" role="alert">
+                        {{Session::get('error')}}
+                    </div>
+                @endif
+                @yield('content')
+            </div>
         </main>
     </div>
     <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
@@ -94,70 +97,6 @@
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/jq-3.6.0/jszip-2.5.0/dt-1.11.5/af-2.3.7/b-2.2.2/b-colvis-2.2.2/b-html5-2.2.2/b-print-2.2.2/cr-1.5.5/date-1.1.2/fc-4.0.2/fh-3.2.2/kt-2.6.4/r-2.2.9/rg-1.1.4/rr-1.2.8/sc-2.0.5/sb-1.3.2/sp-2.0.0/sl-1.3.4/sr-1.1.0/datatables.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-    <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            const ListingURL = "{{ route('listing.truck') }}";
-            $(function () {
-                $("#TrucksAll").DataTable({
-                    processing: true,
-                    serverSide: true,
-                    ajax: ListingURL,
-                    columns: [
-                        {data: 'id', name: 'id'},
-                        {data: 'registration_number', name: 'registration_number'},
-                        {data: 'availability', name: 'availability'},
-                        {data: 'available_capacity', name: 'available_capacity', render: $.fn.dataTable.render.number(',', '.', 0,'',' Tons')},
-                        {data: 'action', name: 'action', orderable: false, searchable: false}
-                    ]
-                });
-            });
-
-            const BookingURL = "{{ route('bookings') }}";
-            $(function () {
-                $("#MyBooks").DataTable({
-                    processing: true,
-                    serverSide: true,
-                    ajax: BookingURL,
-                    columns: [
-                        {data: 'id', name: 'id'},
-                        {data: 'booking_date', name: 'booking_date'},
-                        {data: 'registration_number', name: 'registration_number'},
-                        {data: 'booked_from', name: 'booked_from'},
-                        {data: 'delivery_to', name: 'delivery_to'},
-                        {data: 'booking_weight', name: 'booking_weight', render: $.fn.dataTable.render.number(',', '.', 0,'',' Tons')},
-                        {data: 'action', name: 'action', orderable: false, searchable: false}
-                    ]
-                });
-            });
-
-            const OrdersURL = "{{ route('orders') }}";
-            $(function () {
-                $("#MyOrders").DataTable({
-                    processing: true,
-                    serverSide: true,
-                    ajax: OrdersURL,
-                    columns: [
-                        {data: 'id', name: 'id'},
-                        {data: 'booking_date', name: 'booking_date'},
-                        {data: 'company_name', name: 'company_name'},
-                        {data: 'booked_from', name: 'booked_from'},
-                        {data: 'delivery_to', name: 'delivery_to'},
-                        {data: 'booking_weight', name: 'booking_weight', render: $.fn.dataTable.render.number(',', '.', 0,'',' Tons')},
-                        {data: 'action', name: 'action', orderable: false, searchable: false}
-                    ]
-                });
-            });
-            $('input[name="available_date"]').daterangepicker({
-                startDate: moment().startOf('day'),
-                endDate: moment().startOf('day').add(4, 'day'),
-            });
-            $('input[name="booking_date"]').daterangepicker({
-                singleDatePicker: true,
-                showDropdowns: true,
-            })
-        });
-    </script>
     @yield('script-js')
 </body>
 </html>

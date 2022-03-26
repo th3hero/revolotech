@@ -1,95 +1,89 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
-        <div class="card">
-            <div class="card-header">
-                <ul class="nav nav-pills mb-3 justify-content-around" id="pills-tab" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="pills-trucks-tab" data-bs-toggle="pill"
-                                data-bs-target="#pills-trucks" type="button" role="tab" aria-controls="pills-home"
-                                aria-selected="true">All Trucks
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="pills-bookings-tab" data-bs-toggle="pill"
-                                data-bs-target="#pills-bookings" type="button" role="tab" aria-controls="pills-profile"
-                                aria-selected="false">Bookings
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="pills-orders-tab" data-bs-toggle="pill"
-                                data-bs-target="#pills-orders" type="button" role="tab" aria-controls="pills-orders"
-                                aria-selected="false">My Trucks Orders
-                        </button>
-                    </li>
-                </ul>
-            </div>
-            <div class="card-body">
-                <div class="tab-content" id="pills-tabContent">
-                    <div class="tab-pane fade show active" id="pills-trucks" role="tabpanel"
-                         aria-labelledby="pills-trucks-tab">
-                        <div class="container mb-3">
-                            <div class="d-flex justify-content-between">
-                                <h4 class="text-black">All the Trucks in System</h4>
-                                <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
-                                        data-bs-target="#ModalTriggerAddTruck">Add Truck
-                                </button>
-                            </div>
-                        </div>
-                        <div class="table-responsive">
-                            <table class="table" id="TrucksAll">
-                                <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Registration Number</th>
-                                    <th>Available Date</th>
-                                    <th>Capacity</th>
-                                    <th>Button</th>
-                                </tr>
-                                </thead>
-                            </table>
+    <div class="card">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs justify-content-around" data-bs-tabs="tabs">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="true" data-bs-toggle="tab" href="#Trucks">All Trucks</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" href="#MyBookings">My Bookings</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" href="#MyOrdersTab">My Orders</a>
+                </li>
+            </ul>
+        </div>
+        <div class="card-body tab-content">
+            <div class="tab-pane active" id="Trucks">
+                <div class="container">
+                    <div class="container mb-3 mt-2">
+                        <div class="d-flex justify-content-between">
+                            <h4 class="text-black">All the Trucks in System</h4>
+                            <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
+                                    data-bs-target="#ModalTriggerAddTruck">Add Truck
+                            </button>
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="pills-bookings" role="tabpanel" aria-labelledby="pills-bookings-tab">
-                        <div class="container mb-3">
+                    <div class="table-responsive">
+                        <table class="table" id="TrucksAll" style="width: 100%">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Registration Number</th>
+                                <th>Available Date</th>
+                                <th>Capacity</th>
+                                <th>Button</th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="MyBookings">
+                <div class="container">
+                    <div class="container mb-3">
+                        <div class="d-flex justify-content-start">
                             <h4 class="text-black">My Bookings</h4>
                         </div>
-                        <div class="table-responsive">
-                            <table class="table" id="MyBooks">
-                                <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Booking Date</th>
-                                    <th>Registration Number</th>
-                                    <th>Booking From</th>
-                                    <th>Delivery To</th>
-                                    <th>Booked Weight</th>
-                                    <th>Action</th>
-                                </tr>
-                                </thead>
-                            </table>
-                        </div>
                     </div>
-                    <div class="tab-pane fade" id="pills-orders" role="tabpanel" aria-labelledby="pills-orders-tab">
-                        <div class="container">
-                            <h4 class="text-black">My Trucks Order</h4>
-                        </div>
-                        <div class="table-responsive">
-                            <table class="table" id="MyOrders">
-                                <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Booking Date</th>
-                                    <th>Booking Company</th>
-                                    <th>Booked From</th>
-                                    <th>Delivery To</th>
-                                    <th>Booked Weight</th>
-                                    <th>Action</th>
-                                </tr>
-                                </thead>
-                            </table>
-                        </div>
+                    <div class="table-responsive">
+                        <table class="table" id="MyBooks" style="width: 100%">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Booking Date</th>
+                                <th>Registration Number</th>
+                                <th>Booking From</th>
+                                <th>Delivery To</th>
+                                <th>Booked Weight</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="MyOrdersTab">
+                <div class="container">
+                    <div class="container">
+                        <h4 class="text-black">My Trucks Order</h4>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table" id="MyOrders" style="width: 100%">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Booking Date</th>
+                                <th>Booking Company</th>
+                                <th>Booked From</th>
+                                <th>Delivery To</th>
+                                <th>Booked Weight</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -134,4 +128,73 @@
         </div>
     </div>
     <!-- Modal Code :: Ends -->
+@endsection
+
+@section('script-js')
+    <script type="text/javascript">
+        $(document).ready(function () {
+            const ListingURL = "{{ route('listing.truck') }}";
+            $(function () {
+                $("#TrucksAll").DataTable({
+                    responsive: true,
+                    processing: true,
+                    serverSide: true,
+                    ajax: ListingURL,
+                    columns: [
+                        {data: 'id', name: 'id'},
+                        {data: 'registration_number', name: 'registration_number'},
+                        {data: 'availability', name: 'availability'},
+                        {data: 'available_capacity', name: 'available_capacity', render: $.fn.dataTable.render.number(',', '.', 0,'',' Tons')},
+                        {data: 'action', name: 'action', orderable: false, searchable: false}
+                    ]
+                });
+            });
+
+            const BookingURL = "{{ route('bookings') }}";
+            $(function () {
+                $("#MyBooks").DataTable({
+                    responsive: true,
+                    processing: true,
+                    serverSide: true,
+                    ajax: BookingURL,
+                    columns: [
+                        {data: 'id', name: 'id'},
+                        {data: 'booking_date', name: 'booking_date'},
+                        {data: 'registration_number', name: 'registration_number'},
+                        {data: 'booked_from', name: 'booked_from'},
+                        {data: 'delivery_to', name: 'delivery_to'},
+                        {data: 'booking_weight', name: 'booking_weight', render: $.fn.dataTable.render.number(',', '.', 0,'',' Tons')},
+                        {data: 'action', name: 'action', orderable: false, searchable: false}
+                    ]
+                });
+            });
+
+            const OrdersURL = "{{ route('orders') }}";
+            $(function () {
+                $("#MyOrders").DataTable({
+                    responsive: true,
+                    processing: true,
+                    serverSide: true,
+                    ajax: OrdersURL,
+                    columns: [
+                        {data: 'id', name: 'id'},
+                        {data: 'booking_date', name: 'booking_date'},
+                        {data: 'company_name', name: 'company_name'},
+                        {data: 'booked_from', name: 'booked_from'},
+                        {data: 'delivery_to', name: 'delivery_to'},
+                        {data: 'booking_weight', name: 'booking_weight', render: $.fn.dataTable.render.number(',', '.', 0,'',' Tons')},
+                        {data: 'action', name: 'action', orderable: false, searchable: false}
+                    ]
+                });
+            });
+            $('input[name="available_date"]').daterangepicker({
+                startDate: moment().startOf('day'),
+                endDate: moment().startOf('day').add(4, 'day'),
+            });
+            $('input[name="booking_date"]').daterangepicker({
+                singleDatePicker: true,
+                showDropdowns: true,
+            })
+        });
+    </script>
 @endsection
