@@ -112,6 +112,42 @@
                     ]
                 });
             });
+
+            const BookingURL = "{{ route('bookings') }}";
+            $(function () {
+                $("#MyBooks").DataTable({
+                    processing: true,
+                    serverSide: true,
+                    ajax: BookingURL,
+                    columns: [
+                        {data: 'id', name: 'id'},
+                        {data: 'booking_date', name: 'booking_date'},
+                        {data: 'registration_number', name: 'registration_number'},
+                        {data: 'booked_from', name: 'booked_from'},
+                        {data: 'delivery_to', name: 'delivery_to'},
+                        {data: 'booking_weight', name: 'booking_weight', render: $.fn.dataTable.render.number(',', '.', 0,'',' Tons')},
+                        {data: 'action', name: 'action', orderable: false, searchable: false}
+                    ]
+                });
+            });
+
+            const OrdersURL = "{{ route('orders') }}";
+            $(function () {
+                $("#MyOrders").DataTable({
+                    processing: true,
+                    serverSide: true,
+                    ajax: OrdersURL,
+                    columns: [
+                        {data: 'id', name: 'id'},
+                        {data: 'booking_date', name: 'booking_date'},
+                        {data: 'company_name', name: 'company_name'},
+                        {data: 'booked_from', name: 'booked_from'},
+                        {data: 'delivery_to', name: 'delivery_to'},
+                        {data: 'booking_weight', name: 'booking_weight', render: $.fn.dataTable.render.number(',', '.', 0,'',' Tons')},
+                        {data: 'action', name: 'action', orderable: false, searchable: false}
+                    ]
+                });
+            });
             $('input[name="available_date"]').daterangepicker({
                 startDate: moment().startOf('day'),
                 endDate: moment().startOf('day').add(4, 'day'),

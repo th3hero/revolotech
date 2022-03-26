@@ -73,10 +73,21 @@ class BookingController extends Controller
         return true;
     }
 
+    private function CheckWeightIsValid($input_weight, $db_weight) {
+
+    }
+
     public function BookingsByUser() {
-        $data = Bookings::where(['user_id' => Auth::user()->id])->get();
+        $data = Bookings::with('Truck')->where(['user_id' => Auth::user()->id])->get();
         return \DataTables::of($data)->addIndexColumn()->addColumn('action', function ($data) {
-            return '<a href="/book/'. \Illuminate\Support\Facades\Crypt::encrypt($data->id).'" class="handle btn btn-outline-primary btn-sm">Book Truck</a>';
-        })->addColumn('availability', function ($data) { return date('d M, Y', strtotime($data->available_from_date)).' - '.date('d M, Y', strtotime($data->available_to_date)); })->editColumn('created_at', function($data){ $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->created_at)->format('d M, Y'); return $formatedDate; })->rawColumns(['action'])->make(true);
+            return '<a href="/book/cancel/'. \Illuminate\Support\Facades\Crypt::encrypt($data->id).'" class="handle btn btn-outline-primary btn-sm">Cancel Book</a>';
+        })->addColumn('booking_date', function ($data) { return date('d M, Y', strtotime($data->booking_date)); })->addColumn('registration_number', function ($data) { return $data->Truck->registration_number; })->rawColumns(['action'])->make(true);
+    }
+
+    public function BookingsOfOwner() {
+        $data = Bookings::whereHas('Truck', function($q){$q->where('owner_id', '=', Auth::user()->id);})->get();
+        return \DataTables::of($data)->addIndexColumn()->addColumn('action', function ($data) {
+            return '<a href="/order/deny/'. \Illuminate\Support\Facades\Crypt::encrypt($data->id).'" class="handle btn btn-outline-primary btn-sm">Deny Booking</a>';
+        })->addColumn('booking_date', function ($data) { return date('d M, Y', strtotime($data->booking_date)); })->addColumn('registration_number', function ($data) { return $data->Truck->registration_number; })->rawColumns(['action'])->make(true);
     }
 }

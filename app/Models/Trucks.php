@@ -22,4 +22,12 @@ class Trucks extends Model
         'available_for_book',
         'available_capacity'
     ];
+
+    public function Booked() {
+        return $this->hasMany(Bookings::class, 'truck_id');
+    }
+
+    public function Owner() {
+        return $this->belongsTo(User::class, 'owner_id');
+    }
 }

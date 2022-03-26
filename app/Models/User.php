@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -41,4 +42,22 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Returning the Bookings by the User.
+     *
+     * @return HasMany
+     */
+    public function Bookings() {
+        return $this->hasMany(Bookings::class, 'user_id');
+    }
+
+    /**
+     * Returning the Trucks of the User.
+     *
+     * @return HasMany
+     */
+    public function Truck() {
+        return $this->hasMany(Trucks::class, 'owner_id');
+    }
 }
