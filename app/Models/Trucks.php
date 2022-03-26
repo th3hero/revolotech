@@ -14,6 +14,7 @@ class Trucks extends Model
 
     protected $fillable = [
         'owner_id',
+        'truck_uid',
         'registration_number',
         'total_capacity',
         'manufacturing_year',

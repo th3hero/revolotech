@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Truck;
 use App\Http\Controllers\Controller;
 use App\Models\Trucks;
 use Auth;
+use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Http\Request;
 
 class RegistrationController extends Controller
@@ -23,8 +24,10 @@ class RegistrationController extends Controller
         if (Auth::user()) {
             $owner = Auth::user()->id;
         }
+        $uid = IdGenerator::generate(['table' => 'trucks', 'field' => 'truck_uid', 'length' => 6, 'prefix' => 'TR']);
         $create = Trucks::create([
             'owner_id' => $owner,
+            'truck_uid' => $uid,
             'registration_number' => $data['registration_number'],
             'total_capacity' => $data['capacity'],
             'manufacturing_year' => $data['manufacturing_year'],

@@ -8,10 +8,12 @@ use App\Models\Trucks;
 use Auth;
 use Carbon\Carbon;
 use Crypt;
+use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use phpDocumentor\Reflection\Types\True_;
 
 class BookingController extends Controller
 {
@@ -56,7 +58,33 @@ class BookingController extends Controller
         if ($available !== true) {
             return redirect()->back()->withErrors(['booking_date' => 'Booking Date is Invalid, should be between '.date('d M, Y', strtotime($truck->available_from_date)).' to '.date('d M, Y', strtotime($truck->available_to_date))])->withInput();
         }
-        dd($truck);
+        $weight_issue = $this->CheckWeightIsValid($data['booking_weight'], $truck['available_capacity']);
+        if ($weight_issue !== false) {
+            return redirect()->back()->withErrors(['booking_weight' => 'Booking Weight is Invalid, should be less than '.$truck->available_capacity.' Tons'])->withInput();
+        }
+        $uid = IdGenerator::generate(['table' => 'bookings', 'field' => 'booking_id', 'length' => 6, 'prefix' => 'BK']);
+        $status = $this->ChangeStatusOrNot($data['booking_weight'], $truck['available_capacity']);
+        $booking = Bookings::create([
+            'user_id' => Auth::user()->id,
+            'booking_id' => $uid,
+            'truck_id' => $truck->id,
+            'company_name' => $data['company_name'],
+            'booking_date' => date('Y-m-d', strtotime($data['booking_date'])),
+            'booking_weight' => $data['booking_weight'],
+            'booked_from' => $data['booking_from'],
+            'delivery_to' => $data['delivery_location']
+        ]);
+        if ($booking !== null) {
+            $truck->update([
+                'available_from_date' => $booking->booking_date,
+                'available_to_date' => $booking->booking_date,
+                'available_for_book' => $status,
+                'available_capacity' => $truck['available_capacity']-$booking['booking_weight']
+            ]);
+            return redirect()->route('home')->with('success', 'Truck Booked Successfully');
+        } else {
+            return redirect()->back()->with('error', 'Something Went Wrong!');
+        }
     }
 
     private function CheckIfDataForgedOrManipulated($val1, $val2) {
@@ -74,7 +102,18 @@ class BookingController extends Controller
     }
 
     private function CheckWeightIsValid($input_weight, $db_weight) {
+        if ($input_weight <= $db_weight) {
+            return false;
+        }
+        return true;
+    }
 
+    private function ChangeStatusOrNot($input_weight, $db_weight) {
+        $weight = $db_weight-$input_weight;
+        if ($weight >= 1) {
+            return true;
+        }
+        return false;
     }
 
     public function BookingsByUser() {
