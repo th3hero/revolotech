@@ -13,6 +13,7 @@ class Trucks extends Model
     use HasFactory;
 
     protected $fillable = [
+        'owner_id',
         'registration_number',
         'total_capacity',
         'manufacturing_year',

@@ -15,6 +15,8 @@ return new class extends Migration
     {
         Schema::create('trucks', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('owner_id')->nullable();
+            $table->foreign('owner_id')->on('users')->references('id')->onUpdate('cascade')->onDelete('cascade');
             $table->string('registration_number');
             $table->integer('total_capacity');
             $table->year('manufacturing_year');

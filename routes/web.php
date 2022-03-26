@@ -17,15 +17,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Auth::routes();
 
-Auth::routes([
-    'register' => false
-]);
-
-Route::get('/home', [HomeController::class, 'index'])->name('home');
-Route::get('listing/truck', [Controller::class, 'TruckListingData'])->name('listing.truck');
+Route::get('/', [Controller::class, 'TruckListingData'])->name('listing.truck');
 Route::post('add-truck', [RegistrationController::class, 'AddTruck'])->name('add.truck');
-Route::get('book/{truck}', [BookingController::class, 'BookTruck'])->name('book.truck');
+
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::get('book/{truck}', [BookingController::class, 'BookTruck'])->name('book.truck');
+    Route::post('book', [BookingController::class, 'HandleBookRequestData'])->name('book');
+});

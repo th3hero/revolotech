@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Truck;
 
 use App\Http\Controllers\Controller;
 use App\Models\Trucks;
+use Auth;
 use Illuminate\Http\Request;
 
 class RegistrationController extends Controller
@@ -18,7 +19,12 @@ class RegistrationController extends Controller
         $date_range = explode(' - ', $data['available_date']);
         $from_date = $date_range[0];
         $to_date = $date_range[1];
+        $owner = null;
+        if (Auth::user()) {
+            $owner = Auth::user()->id;
+        }
         $create = Trucks::create([
+            'owner_id' => $owner,
             'registration_number' => $data['registration_number'],
             'total_capacity' => $data['capacity'],
             'manufacturing_year' => $data['manufacturing_year'],
